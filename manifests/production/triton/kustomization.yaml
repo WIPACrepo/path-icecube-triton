@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: icecube-dev
+namespace: icecube-prod
 
 resources:
   - network-kube-dns.yaml
