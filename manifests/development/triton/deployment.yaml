@@ -53,6 +53,15 @@ spec:
         release: test
 
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nvidia.com/gpu.present
+                operator: In
+                values:
+                - "true"
       volumes:
         - name: models
           hostPath:
@@ -64,9 +73,9 @@ spec:
           volumeMounts:
             - mountPath: /models
               name: models
-          resources:
-            limits:
-              nvidia.com/gpu: 1
+          # resources:
+          #   limits:
+          #     nvidia.com/gpu: 1
           args:
             - tritonserver
             - --model-repository=/models
