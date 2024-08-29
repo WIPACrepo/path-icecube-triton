@@ -4,18 +4,6 @@ kind: Kustomization
 namespace: icecube-dev
 
 resources:
-  - network-kube-dns.yaml
-  - network-internal.yaml
-  - network-external.yaml
-  - network-api-access.yaml
-  - config-secret.yaml
-  - rolebinding.yaml
-  - role.yaml
-  - secrets.yaml 
-  - serviceaccount.yaml
-  - statefulset.yaml  
-  # - svc-headless.yaml
-  - svc.yaml
-  # - traefik-ingress-class.yaml
-  # - traefik-rbac.yaml
-  # - traefik-traefik-ingress.yaml
+  - deployment.yaml
+  - network.yaml
+  - service.yaml

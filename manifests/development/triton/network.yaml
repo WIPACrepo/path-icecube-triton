@@ -1,0 +1,71 @@
+apiVersion: crd.projectcalico.org/v1
+kind: NetworkPolicy
+metadata:
+  name: release-name-triton-kube-dns
+  namespace: "icecube-dev"
+spec:
+  selector: all()
+  egress:
+  - action: Allow
+    destination:
+      services:
+        name: kube-dns
+        namespace: default
+---
+apiVersion: crd.projectcalico.org/v1
+kind: NetworkPolicy
+metadata:
+  name: triton-api-access
+  # namespace: "icecube-dev"
+spec:
+  egress:
+  - action: Allow
+    destination:
+      services:
+        name: kubernetes
+        namespace: "icecube-dev"
+  selector: app.kubernetes.io/name == "triton" 
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: triton-internal
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: triton
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: triton
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: triton
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: triton-external
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: triton
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - ports:
+        - protocol: TCP
+          port: 8000
+        - protocol: TCP
+          port: 8001
+        - protocol: TCP
+          port: 8002
+  egress:
+  - {}
